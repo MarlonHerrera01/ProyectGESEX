@@ -1,23 +1,34 @@
-annotated-types
+# Core
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+python-dotenv
+
+# SQLite (driver por defecto de SQLAlchemy, ya viene con Python)
+
+# Optional: Para UUID y JSONField
+sqlmodel
+
+# Testing (si decides usarlo en el futuro)
+pytest
+
+# Client HTTP (opcional para pruebas internas)
+httpx
+
+# Email o validaciones extra (si las usas)
+email-validator
+
+# Dependencias internas usadas por FastAPI y Pydantic
 anyio
 certifi
 click
-fastapi
 greenlet
 h11
 httpcore
-httpx
 idna
-iniconfig
 packaging
 pluggy
-pydantic
-pydantic_core
-pytest
-python-dotenv
 sniffio
-SQLAlchemy
-sqlmodel
-starlette
 typing_extensions
-uvicorn
+iniconfig
