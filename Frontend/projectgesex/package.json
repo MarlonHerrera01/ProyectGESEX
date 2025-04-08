@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.0.17",
+    "lucide-react": "^0.487.0",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -32,6 +33,7 @@
     "tailwindcss-animate": "^1.0.7",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
+    "lucide-react": "^0.487.0",
     "vite": "^6.2.0"
   },
   "eslintConfig": {
