@@ -14,8 +14,11 @@ dist-ssr
 *.local
 
 # Python cache
+
 __pycache__/
+**/__pycache__/
 *.pyc
+
 
 # Editor directories and files
 .vscode/*
