@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, Any
 from datetime import date
 from uuid import UUID
 
@@ -13,10 +13,7 @@ class RespuestaCreate(BaseModel):
     usuario_id: UUID
     test_id: UUID
     respuestas: List[RespuestaDimension]
-    edad: int
-    genero: str
-    nivel_educativo: str
-    contexto_cultural: str
+    caracterizacion_datos: Dict[str, Any]  # Nuevo campo dinámico
     fecha: date
 
 # Esquema de salida (incluye el ID generado)

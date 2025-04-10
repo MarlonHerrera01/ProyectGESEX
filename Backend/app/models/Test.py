@@ -9,6 +9,7 @@ class Test(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     titulo = Column(String, nullable=False)
     dimensiones = Column(JSONB, nullable=False)  # Estructura de dimensiones y preguntas en formato JSON
+    caracterizacion_template = Column(JSONB, nullable=False)  # Nuevo campo para datos de caracterización
 
     def __repr__(self):
         return f"<Test id={self.id} titulo={self.titulo}>"
