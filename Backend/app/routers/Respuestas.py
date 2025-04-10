@@ -23,14 +23,11 @@ def get_db():
 @router.post("/", response_model=RespuestaOut)
 def enviar_respuesta(respuesta: RespuestaCreate, db: Session = Depends(get_db)):
     nueva = Respuesta(
-        usuario_id=respuesta.usuario_id,
         test_id=respuesta.test_id,
-        respuestas=respuesta.respuestas,
-        edad=respuesta.edad,
-        genero=respuesta.genero,
-        nivel_educativo=respuesta.nivel_educativo,
-        contexto_cultural=respuesta.contexto_cultural,
-        fecha=date.today()
+        usuario_id=respuesta.usuario_id,
+        respuestas=[r.dict() for r in respuesta.respuestas],
+        caracterizacion_datos=respuesta.caracterizacion_datos,
+        fecha=respuesta.fecha
     )
 
     db.add(nueva)
