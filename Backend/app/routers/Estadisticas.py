@@ -8,7 +8,7 @@ from app.database import SessionLocal
 from app.models.Estadisticas import Estadisticas as EstadisticasModel
 from app.schemas.Estadisticas import EstadisticasCreate , EstadisticasOut
 
-from Backend.app.models.Respuestas import Respuesta
+from app.models.Respuestas import Respuesta
 
 router = APIRouter(prefix="/estadisticas", tags=["Estadísticas"])
 
