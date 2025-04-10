@@ -12,15 +12,11 @@ class Respuesta(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     test_id = Column(UUID(as_uuid=True), ForeignKey("tests.id"), nullable=False)
     usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)
-
-    # JSON estructurado: [{"dimension": "...", "respuestas": [1, 2, 3]}]
-    respuestas = Column(MutableList.as_mutable(JSON), nullable=False)
-
+    respuestas = Column(MutableList.as_mutable(JSON), nullable=False)  # Lista de respuestas
     edad = Column(Integer, nullable=False)
     genero = Column(String, nullable=False)
     nivel_educativo = Column(String, nullable=False)
     contexto_cultural = Column(String, nullable=False)
-
     fecha = Column(Date, nullable=False)
 
     # Relaciones
