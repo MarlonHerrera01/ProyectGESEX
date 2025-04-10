@@ -1,16 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
-from datetime import datetime
+from datetime import datetime, date
 
 from app.database import SessionLocal
 from app.models.Respuestas import Respuesta
 from app.models.Usuario import Usuario
-from app.schemas.Respuestas import RespuestaCreate, RespuestaOut
 from app.models.Segmentacion import Segmentacion
+from app.schemas.Respuestas import RespuestaCreate, RespuestaOut
 
 router = APIRouter(prefix="/Respuestas", tags=["Respuestas"])
 
+# Dependencia para obtener la DB
 def get_db():
     db = SessionLocal()
     try:
@@ -18,20 +19,25 @@ def get_db():
     finally:
         db.close()
 
+# POST para recibir y guardar respuestas
 @router.post("/", response_model=RespuestaOut)
 def enviar_respuesta(respuesta: RespuestaCreate, db: Session = Depends(get_db)):
     nueva = Respuesta(
         usuario_id=respuesta.usuario_id,
         test_id=respuesta.test_id,
         respuestas=respuesta.respuestas,
-        fecha=datetime.utcnow()
+        edad=respuesta.edad,
+        genero=respuesta.genero,
+        nivel_educativo=respuesta.nivel_educativo,
+        contexto_cultural=respuesta.contexto_cultural,
+        fecha=date.today()
     )
 
     db.add(nueva)
     db.commit()
     db.refresh(nueva)
 
-    # Calcular categoría a partir de las respuestas
+    # Calcular categoría basada en las respuestas
     categoria = Segmentacion.calcular_categoria(nueva)
 
     # Actualizar la categoría del usuario
@@ -42,14 +48,15 @@ def enviar_respuesta(respuesta: RespuestaCreate, db: Session = Depends(get_db)):
 
     return nueva
 
+# GET general para ver todas las respuestas
 @router.get("/", response_model=list[RespuestaOut])
 def listar_respuestas(db: Session = Depends(get_db)):
     return db.query(Respuesta).all()
 
+# GET para obtener respuestas por usuario
 @router.get("/usuario/{usuario_id}", response_model=list[RespuestaOut])
 def obtener_respuestas_por_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
     respuestas = db.query(Respuesta).filter(Respuesta.usuario_id == usuario_id).all()
     if not respuestas:
         raise HTTPException(status_code=404, detail="No se encontraron respuestas para este usuario")
     return respuestas
-
