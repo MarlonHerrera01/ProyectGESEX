@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, String, Date, Integer
+from sqlalchemy import Column, ForeignKey, String, Date
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.types import JSON
@@ -13,10 +13,7 @@ class Respuesta(Base):
     test_id = Column(UUID(as_uuid=True), ForeignKey("tests.id"), nullable=False)
     usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id"), nullable=False)
     respuestas = Column(MutableList.as_mutable(JSON), nullable=False)  # Lista de respuestas
-    edad = Column(Integer, nullable=False)
-    genero = Column(String, nullable=False)
-    nivel_educativo = Column(String, nullable=False)
-    contexto_cultural = Column(String, nullable=False)
+    caracterizacion_datos = Column(JSON, nullable=False)  # Nuevo: campos dinámicos según el template
     fecha = Column(Date, nullable=False)
 
     # Relaciones
