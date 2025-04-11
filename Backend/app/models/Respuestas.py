@@ -17,8 +17,8 @@ class Respuesta(Base):
     fecha = Column(Date, nullable=False)
 
     # Relaciones
-    usuario = relationship("Usuario", back_populates="respuestas", lazy="joined")
-    test = relationship("Test", back_populates="respuestas", lazy="joined")
+    usuario = relationship("Usuario", back_populates="respuesta", lazy="joined")
+    test = relationship("Test", back_populates="respuesta", lazy="joined")
 
     def __repr__(self):
         return f"<Respuesta id={self.id} usuario_id={self.usuario_id} test_id={self.test_id}>"
