@@ -35,13 +35,13 @@ def enviar_respuesta(respuesta: RespuestaCreate, db: Session = Depends(get_db)):
     db.refresh(nueva)
 
     # Calcular categoría basada en las respuestas
-    categoria = Segmentacion.calcular_categoria(nueva)
+    #categoria = Segmentacion.calcular_categoria(nueva)
 
     # Actualizar la categoría del usuario
-    usuario = db.query(Usuario).filter_by(id=respuesta.usuario_id).first()
-    if usuario:
-        usuario.categoria = categoria
-        db.commit()
+    #usuario = db.query(Usuario).filter_by(id=respuesta.usuario_id).first()
+    #if usuario:
+    #    usuario.categoria = categoria
+    #    db.commit()
 
     return nueva
 

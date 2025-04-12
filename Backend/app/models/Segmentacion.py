@@ -16,7 +16,7 @@ class Segmentacion:
             "Negativa": 3,
             "Muy negativa": 4
         }
-
+        print(respuestas, type(respuestas), "Print respuestas")
         total = len(respuestas)
         total_puntos = sum([puntajes.get(r, 2) for r in respuestas])
         porcentaje = (total_puntos / (total * 4)) * 100

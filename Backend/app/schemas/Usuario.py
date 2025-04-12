@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from uuid import UUID
 
 class UsuarioBase(BaseModel):
     nombre: str
@@ -8,7 +9,7 @@ class UsuarioCreate(UsuarioBase):
     contrasena: str
 
 class UsuarioOut(UsuarioBase):
-    id: int
+    id: UUID
 
     model_config = {
         "from_attributes": True
