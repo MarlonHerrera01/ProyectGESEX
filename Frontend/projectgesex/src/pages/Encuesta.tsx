@@ -1,4 +1,5 @@
 import QuestionCard from "../components/QuestionCard";
+import CaracterizacionForm from "../components/CaracterizacionForm";
 
 const Encuesta = () => {
   const preguntas = [
@@ -24,10 +25,16 @@ const Encuesta = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-3 px-4 py-6 md:px-10">
-      {preguntas.map((pregunta, index) => (
-        <QuestionCard key={index} question={pregunta} />
-      ))}
+    <div className="space-y-12 px-4 md:px-10 py-8">
+      {/* Formulario de datos personales */}
+      <CaracterizacionForm />
+
+      {/* Preguntas */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-3">
+        {preguntas.map((pregunta, index) => (
+          <QuestionCard key={index} question={pregunta} />
+        ))}
+      </div>
     </div>
   );
 };
