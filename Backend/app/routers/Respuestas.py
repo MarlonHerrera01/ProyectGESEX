@@ -24,7 +24,6 @@ def get_db():
 def enviar_respuesta(respuesta: RespuestaCreate, db: Session = Depends(get_db)):
     nueva = Respuesta(
         test_id=respuesta.test_id,
-        usuario_id=respuesta.usuario_id,
         respuestas=[r.dict() for r in respuesta.respuestas],
         caracterizacion_datos=respuesta.caracterizacion_datos,
         fecha=respuesta.fecha
@@ -49,11 +48,3 @@ def enviar_respuesta(respuesta: RespuestaCreate, db: Session = Depends(get_db)):
 @router.get("/", response_model=list[RespuestaOut])
 def listar_respuestas(db: Session = Depends(get_db)):
     return db.query(Respuesta).all()
-
-# GET para obtener respuestas por usuario
-@router.get("/usuario/{usuario_id}", response_model=list[RespuestaOut])
-def obtener_respuestas_por_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
-    respuestas = db.query(Respuesta).filter(Respuesta.usuario_id == usuario_id).all()
-    if not respuestas:
-        raise HTTPException(status_code=404, detail="No se encontraron respuestas para este usuario")
-    return respuestas

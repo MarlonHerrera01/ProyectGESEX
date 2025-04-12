@@ -10,7 +10,6 @@ class RespuestaDimension(BaseModel):
 
 # Esquema para crear una respuesta
 class RespuestaCreate(BaseModel):
-    usuario_id: UUID
     test_id: UUID
     respuestas: List[RespuestaDimension]
     caracterizacion_datos: Dict[str, Any]  # Nuevo campo dinámico
