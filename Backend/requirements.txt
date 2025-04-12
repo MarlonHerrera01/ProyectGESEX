@@ -4,6 +4,7 @@ uvicorn
 sqlalchemy
 pydantic
 python-dotenv
+CORS middleware
 
 # SQLite (driver por defecto de SQLAlchemy, ya viene con Python)
 

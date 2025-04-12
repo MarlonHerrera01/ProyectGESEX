@@ -15,7 +15,7 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/Crear/", response_model=TestOut)
+@router.post("/", response_model=TestOut)
 def crear_test(test: TestCreate, db: Session = Depends(get_db)):
     nuevo_test = Test(
         titulo=test.titulo,
