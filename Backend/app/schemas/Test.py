@@ -19,6 +19,7 @@ class TestCreate(BaseModel):
     titulo: str
     dimensiones: List[Dimension]
     caracterizacion_template: CaracterizacionTemplate  # nuevo campo
+    categoria : Categoria
     
 class TestOut(BaseModel):
     id: UUID
