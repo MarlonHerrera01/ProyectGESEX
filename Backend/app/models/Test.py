@@ -12,6 +12,7 @@ class Test(Base):
     titulo = Column(String, nullable=False)
     dimensiones = Column(JSON, nullable=False)  # Estructura de dimensiones y preguntas en formato JSON
     caracterizacion_template = Column(JSON, nullable=False)  # Nuevo campo para datos de caracterización
+    categoria = Column(JSON, nullable=True)  # Estructura de categoría dada por la segmentación
 
     respuesta = relationship("Respuesta", back_populates="test", lazy="joined")
     def __repr__(self):

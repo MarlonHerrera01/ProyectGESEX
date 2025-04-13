@@ -5,21 +5,35 @@
 
 class Segmentacion:
     @staticmethod
-    def calcular_categoria(respuestas: list[str]) -> dict:
+    def calcular_categoria(respuestas: list[dict]) -> dict:
         """
-        Analiza las respuestas y retorna una categoría basada en puntajes.
+        Analiza las respuestas agrupadas por dimensión (cada una con una lista de números del 1 al 5)
+        y retorna una categoría basada en puntajes.
+        También imprime los valores textuales asociados.
         """
-        puntajes = {
-            "Muy positiva": 0,
-            "Positiva": 1,
-            "Neutral": 2,
-            "Negativa": 3,
-            "Muy negativa": 4
+        texto_respuestas = {
+            5: "Totalmente en desacuerdo",
+            4: "En desacuerdo",
+            3: "Ni de acuerdo ni en desacuerdo",
+            2: "De acuerdo",
+            1: "Totalmente de acuerdo"
         }
-        print(respuestas, type(respuestas), "Print respuestas")
-        total = len(respuestas)
-        total_puntos = sum([puntajes.get(r, 2) for r in respuestas])
-        porcentaje = (total_puntos / (total * 4)) * 100
+
+        total_respuestas = 0
+        total_puntos = 0
+
+        print("Respuestas recibidas y su significado:")
+
+        for grupo in respuestas:
+            valores = grupo.get("respuestas", [])
+            for valor in valores:
+                texto = texto_respuestas.get(valor, "Respuesta desconocida")
+                puntos = max(0, min(4, valor - 1))
+                total_puntos += puntos
+                total_respuestas += 1
+                print(f"Respuesta: {valor} → {texto} | Puntaje asignado: {puntos}")
+
+        porcentaje = (total_puntos / (total_respuestas * 4)) * 100 if total_respuestas > 0 else 0
 
         if porcentaje <= 20:
             categoria = "Sin homofobia"
