@@ -24,6 +24,7 @@ class Segmentacion:
 
         print("Respuestas recibidas y su significado:")
 
+        #Muestra las respuestas y su significado
         for grupo in respuestas:
             valores = grupo.get("respuestas", [])
             for valor in valores:
