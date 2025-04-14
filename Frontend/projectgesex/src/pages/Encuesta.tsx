@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { obtenerFormularios, enviarRespuestas } from "../services/cuestionarios";
+import { obtenerFormularios, enviarRespuestas } from "../services/Cuestionarios";
 
 const Encuesta = () => {
   const [formularios, setFormularios] = useState<any[]>([]);

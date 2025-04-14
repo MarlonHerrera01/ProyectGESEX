@@ -8,7 +8,7 @@ import {
   //obtenerEstadisticasPorGenero,
   obtenerEstadisticasPorComuna
 } from "../services/Estadisticas";
-import { obtenerCuestionarios } from "../services/Cuestionarios";
+import { obtenerFormularios } from "../services/Cuestionarios";
 
 import PromediosPorDimension from "../components/PromediosPorDimension";
 import DistribucionDimension from "../components/DistribucionPorDimension";
@@ -40,7 +40,7 @@ const Estadisticas = () => {
   const [porComuna, setPorComuna] = useState<any>(null);
 
   useEffect(() => {
-    obtenerCuestionarios()
+    obtenerFormularios()
       .then((res) => setCuestionarios(res.data))
       .catch((err) => console.error("Error obteniendo cuestionarios", err));
   }, []);
