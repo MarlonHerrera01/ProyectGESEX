@@ -1,5 +1,3 @@
-import React from "react";
-
 interface MaterialCardProps {
   imagen: string;
   titulo: string;
