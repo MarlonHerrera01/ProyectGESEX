@@ -5,7 +5,7 @@ import {
   obtenerComparacionTipoParticipante,
   obtenerEstadisticasPorEdad,
   obtenerEstadisticasPorPronombre,
-  obtenerEstadisticasPorGenero,
+  //obtenerEstadisticasPorGenero,
   obtenerEstadisticasPorComuna
 } from "../services/estadisticas";
 import { obtenerCuestionarios } from "../services/cuestionarios";
@@ -16,7 +16,7 @@ import ComparacionPorTipoParticipante from "../components/ComparacionPorTipo";
 import PromedioPorEdad from "../components/PromedioPorEdad";
 import PromedioPorPronombre from "../components/PromedioPorPronombre";
 //import PromedioPorGenero from "../components/PromedioPorGenero";
-//import ConteoPorComuna from "../components/ConteoPorComuna";
+import ConteoPorComuna from "../components/ConteoPorComuna";
 
 interface Cuestionario {
   id: string;
@@ -36,7 +36,7 @@ const Estadisticas = () => {
   const [comparacion, setComparacion] = useState<any>(null);
   const [porEdad, setPorEdad] = useState<any>(null);
   const [porPronombre, setPorPronombre] = useState<any>(null);
-  const [porGenero, setPorGenero] = useState<any>(null);
+  //const [porGenero, setPorGenero] = useState<any>(null);
   const [porComuna, setPorComuna] = useState<any>(null);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const Estadisticas = () => {
     obtenerComparacionTipoParticipante().then(res => setComparacion(res.data));
     obtenerEstadisticasPorEdad(testId).then(res => setPorEdad(res.data));
     obtenerEstadisticasPorPronombre(testId).then(res => setPorPronombre(res.data));
-    obtenerEstadisticasPorGenero(testId).then(res => setPorGenero(res.data));
+    //obtenerEstadisticasPorGenero(testId).then(res => setPorGenero(res.data));
     obtenerEstadisticasPorComuna(testId).then(res => setPorComuna(res.data));
   }, [testId]);
 
@@ -109,11 +109,34 @@ const Estadisticas = () => {
           <h2 className="text-xl font-semibold">Promedio por Edad</h2>
           {porEdad && <PromedioPorEdad data={porEdad} testId={testId}/>}
         </div>
+        
+        {tipoParticipante === "" && (
+          <div className="bg-white shadow-md rounded-xl p-4">
+            <h2 className="text-xl font-semibold">Conteo por Comuna</h2>
+          </div>
+        )}  
+
+        {tipoParticipante === "" && (
+          <div className="bg-white shadow-md rounded-xl p-4">
+            <h2 className="text-xl font-semibold">Promedio por Pronombre</h2>
+          </div>
+        )}
+      
       </div>
-      <div className="bg-white shadow-md rounded-xl p-4">
-        <h2 className="text-xl font-semibold">Promedio por Pronombre</h2>
-        {porPronombre && <PromedioPorPronombre data={porPronombre} testId={testId} />}
-      </div>
+
+      {tipoParticipante != "" && porComuna && (
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-xl font-semibold">Promedio por Pronombre</h2>
+          {porPronombre && <PromedioPorPronombre data={porPronombre} testId={testId} />}
+        </div>
+      )}
+
+      {tipoParticipante === "habitante" && porComuna && (
+        <div className="bg-white shadow-md rounded-xl p-4 mt-4">
+          <h2 className="text-xl font-semibold">Conteo por Comuna</h2>
+          <ConteoPorComuna data={porComuna} testId={testId} />
+        </div>
+      )}
     </div>
   );
 };
