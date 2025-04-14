@@ -71,14 +71,14 @@ def distribucion_por_dimension(test_id: UUID, db: Session = Depends(get_db)):
 
     return distribucion
 
-@router.get("/{test_id}/comparacion/tipo_participante", description="Ver cómo varía el promedio por dimensión entre grupos: “universitario”, “habitante”, etc.")
-def comparacion_por_tipo_participante(test_id: UUID, db: Session = Depends(get_db)):
-    respuestas = db.query(Respuesta).filter(Respuesta.test_id == test_id).all()
+@router.get("/comparacion/tipo_participante", description="Ver cómo varía el promedio por dimensión entre grupos: 'universitario', 'habitante', etc.")
+def comparacion_global_por_tipo_participante(db: Session = Depends(get_db)):
+    respuestas = db.query(Respuesta).all()
 
     if not respuestas:
-        raise HTTPException(status_code=404, detail="No se encontraron respuestas para este test.")
+        raise HTTPException(status_code=404, detail="No se encontraron respuestas.")
 
-    suma = defaultdict(lambda: defaultdict(int))
+    suma = defaultdict(lambda: defaultdict(float))
     conteo = defaultdict(lambda: defaultdict(int))
 
     for r in respuestas:
@@ -90,11 +90,14 @@ def comparacion_por_tipo_participante(test_id: UUID, db: Session = Depends(get_d
             conteo[tipo][dimension] += len(valores)
 
     resultado = {}
-    for tipo in suma:
-        resultado[tipo] = {
-            dimension: round(suma[tipo][dimension] / conteo[tipo][dimension], 2)
-            for dimension in suma[tipo]
-        }
+    for tipo in ("universitario", "habitante"):
+        if tipo in suma:
+            resultado[tipo] = {
+                dimension: round(suma[tipo][dimension] / conteo[tipo][dimension], 2)
+                for dimension in suma[tipo]
+            }
+        else:
+            resultado[tipo] = {}
 
     return resultado
 
@@ -152,24 +155,3 @@ def conteo_por_comuna(test_id: UUID, db: Session = Depends(get_db)):
             conteo[comuna] += 1
 
     return dict(conteo)
-
-@router.get("/{test_id}/por-genero", description="Muestra si hay patrones diferentes de respuestas entre géneros.")
-def promedio_por_genero(test_id: UUID, db: Session = Depends(get_db)):
-    respuestas = db.query(Respuesta).filter(Respuesta.test_id == test_id).all()
-
-    agrupados = defaultdict(lambda: defaultdict(list))
-
-    for r in respuestas:
-        genero = r.caracterizacion_datos.get("genero", "No especificado")
-        for d in r.respuestas:
-            dimension = d["dimension"]
-            agrupados[genero][dimension].extend(d["respuestas"])
-
-    resultado = {}
-    for genero in agrupados:
-        resultado[genero] = {
-            dim: round(sum(valores) / len(valores), 2)
-            for dim, valores in agrupados[genero].items() if valores
-        }
-
-    return resultado

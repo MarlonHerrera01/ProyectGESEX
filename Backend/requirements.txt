@@ -4,23 +4,26 @@ uvicorn
 sqlalchemy
 pydantic
 python-dotenv
-CORS middleware
+starlette
+email-validator
+fastapi[all]
 
-# SQLite (driver por defecto de SQLAlchemy, ya viene con Python)
+# CORS middleware
+aiofiles
+requests
 
-# Optional: Para UUID y JSONField
+# SQLite (ya viene incluido en Python)
+
+# Optional
 sqlmodel
 
-# Testing (si decides usarlo en el futuro)
+# Testing
 pytest
 
-# Client HTTP (opcional para pruebas internas)
+# HTTP Client para pruebas
 httpx
 
-# Email o validaciones extra (si las usas)
-email-validator
-
-# Dependencias internas usadas por FastAPI y Pydantic
+# Dependencias internas
 anyio
 certifi
 click
