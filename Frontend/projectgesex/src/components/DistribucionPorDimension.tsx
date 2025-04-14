@@ -15,6 +15,7 @@ type DistribucionDimension = {
 
 interface Props {
   testId: string;
+  data:any;
 }
 
 const DistribucionPorDimension = ({ testId }: Props) => {

@@ -15,6 +15,7 @@ type PromediosDimension = {
 
 interface Props {
   testId: string;
+  data:any
 }
 
 const PromediosPorDimension = ({ testId }: Props) => {

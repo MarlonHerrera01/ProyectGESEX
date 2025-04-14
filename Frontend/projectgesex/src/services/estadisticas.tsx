@@ -19,8 +19,8 @@ export const obtenerDistribucionPorDimension = (testId: string) => {
 };
 
 // 4. Comparación por tipo de participante
-export const obtenerComparacionTipoParticipante = (testId: string) => {
-  return axios.get(`${API_BASE_URL}/estadisticas/${testId}/comparacion/tipo_participante`);
+export const obtenerComparacionTipoParticipante = () => {
+  return axios.get(`${API_BASE_URL}/estadisticas/comparacion/tipo_participante`);
 };
 
 // 5. Promedio por edad
