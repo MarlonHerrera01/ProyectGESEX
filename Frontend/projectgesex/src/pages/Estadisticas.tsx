@@ -5,9 +5,7 @@ import {
   obtenerEstadisticasPorGenero,
   obtenerEstadisticasPorComuna,
 } from "../services/estadisticas";
-import {
-  obtenerCuestionarios
-} from "../services/cuestionarios"
+import { obtenerCuestionarios } from "../services/cuestionarios";
 
 interface Estadistica {
   label: string;
@@ -17,100 +15,94 @@ interface Estadistica {
 interface Cuestionario {
   id: string;
   titulo: string;
+  caracterizacion_template: {
+    tipo_participante: "universitario" | "habitante";
+  };
 }
 
 const Estadisticas = () => {
   const [cuestionarios, setCuestionarios] = useState<Cuestionario[]>([]);
   const [testId, setTestId] = useState<string>("");
-  const [porEdad, setPorEdad] = useState<Estadistica[]>([]);
-  const [porPronombre, setPorPronombre] = useState<Estadistica[]>([]);
-  const [porGenero, setPorGenero] = useState<Estadistica[]>([]);
-  const [porComuna, setPorComuna] = useState<Estadistica[]>([]);
+  const [tipoParticipante, setTipoParticipante] = useState<"universitario" | "habitante" | "">("");
 
   useEffect(() => {
     obtenerCuestionarios()
       .then((res) => {
-        setCuestionarios(res.data),
-        console.log(testId)
+        setCuestionarios(res.data);
       })
       .catch((err) => console.error("Error obteniendo cuestionarios", err));
+  }, []);
 
-  }, [testId]);
-
-  useEffect(() => {
-    obtenerEstadisticasPorEdad(testId)
-      .then((res) => {
-        
-        setPorEdad(res.data)})
-      .catch((err) => console.error(err));
-
-    obtenerEstadisticasPorPronombre(testId)
-      .then((res) => setPorPronombre(res.data))
-      .catch((err) => console.error(err));
-
-    obtenerEstadisticasPorGenero(testId)
-      .then((res) => setPorGenero(res.data))
-      .catch((err) => console.error(err));
-
-    obtenerEstadisticasPorComuna(testId)
-      .then((res) => setPorComuna(res.data))
-      .catch((err) => console.error(err));
-  }, [testId]);
+  const handleChange = (id: string) => {
+    setTestId(id);
+    const seleccionado = cuestionarios.find((q) => q.id === id);
+    if (seleccionado) {
+      setTipoParticipante(seleccionado.caracterizacion_template?.tipo_participante || "");
+    } else {
+      setTipoParticipante("");
+    }
+  };
 
   return (
     <div>
-      <h1>Estadísticas del Test</h1>
+      <h1 className="text-2xl font-bold mb-4">Estadísticas del Test</h1>
 
-      <div>
-      <label htmlFor="tipoTest">Selecciona el test:</label>
-      <select
-        id="tipoTest"
-        value={testId}
-        onChange={(e) => setTestId(e.target.value)}
-      >
-        {cuestionarios.map((q: Cuestionario) => (
-          <option key={q.id} value={q.id}>
-            {q.titulo}
+      <div className="mb-6">
+        <label htmlFor="tipoTest" className="block text-lg font-medium mb-1">
+          Selecciona el test:
+        </label>
+        <select
+          id="tipoTest"
+          value={testId}
+          onChange={(e) => handleChange(e.target.value)}
+          className="bg-gray-100 rounded-xl p-3 text-base border border-gray-300 mt-2 transition duration-300 ease-in-out hover:bg-gray-200 cursor-pointer"
+        >
+          <option value="" disabled>
+            -- Selecciona un test --
           </option>
-        ))}
-      </select>
+          {cuestionarios.map((q) => (
+            <option key={q.id} value={q.id}>
+              {q.titulo}
+            </option>
+          ))}
+        </select>
       </div>
 
-      <section>
-        <h2>Promedio por Edad</h2>
-        <ul>
-          {porEdad.map((item, index) => (
-            <li key={index}>{item.label}: {item.valor}</li>
-          ))}
-        </ul>
-      </section>
+      {/* Grid 3x2 con los títulos */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-xl font-semibold">Promedios por Dimensión</h2>
+        </div>
 
-      <section>
-        <h2>Promedio por Pronombre</h2>
-        <ul>
-          {porPronombre.map((item, index) => (
-            <li key={index}>{item.label}: {item.valor}</li>
-          ))}
-        </ul>
-      </section>
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-xl font-semibold">Distribución por Dimensión</h2>
+        </div>
 
-      <section>
-        <h2>Promedio por Género</h2>
-        <ul>
-          {porGenero.map((item, index) => (
-            <li key={index}>{item.label}: {item.valor}</li>
-          ))}
-        </ul>
-      </section>
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-xl font-semibold">
+            Comparación por Tipo de Participante
+          </h2>
+        </div>
 
-      <section>
-        <h2>Conteo por Comuna</h2>
-        <ul>
-          {porComuna.map((item, index) => (
-            <li key={index}>{item.label}: {item.valor}</li>
-          ))}
-        </ul>
-      </section>
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-xl font-semibold">Promedio por Edad</h2>
+        </div>
+
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-xl font-semibold">Promedio por Pronombre</h2>
+        </div>
+
+        <div className="bg-white shadow-md rounded-xl p-4">
+          <h2 className="text-xl font-semibold">Promedio por Género</h2>
+        </div>
+      </div>
+
+      {/* Componente extra solo si es habitante */}
+      {tipoParticipante === "habitante" && (
+        <div className="bg-white shadow-md rounded-xl p-4 mt-4">
+          <h2 className="text-xl font-semibold">Conteo por Comuna</h2>
+        </div>
+      )}
     </div>
   );
 };
