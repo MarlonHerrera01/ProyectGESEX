@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  obtenerEstadisticasPorEdad,
-  obtenerEstadisticasPorPronombre,
-  obtenerEstadisticasPorGenero,
-  obtenerEstadisticasPorComuna,
-} from "../services/estadisticas";
+import { obtenerEstadisticasPorEdad, obtenerEstadisticasPorPronombre, obtenerEstadisticasPorGenero, obtenerEstadisticasPorComuna } from "../services/estadisticas";
 import { obtenerCuestionarios } from "../services/cuestionarios";
-
-interface Estadistica {
-  label: string;
-  valor: number;
-}
+import PromediosPorDimension from "../components/PromediosPorDimension";  // Importar el componente Promedios
+import DistribucionDimension from "../components/DistribucionPorDimension"; // Importar el componente Distribución
 
 interface Cuestionario {
   id: string;
@@ -72,28 +64,34 @@ const Estadisticas = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white shadow-md rounded-xl p-4">
           <h2 className="text-xl font-semibold">Promedios por Dimensión</h2>
+          {testId && <PromediosPorDimension testId={testId} />}
         </div>
 
         <div className="bg-white shadow-md rounded-xl p-4">
           <h2 className="text-xl font-semibold">Distribución por Dimensión</h2>
+          {testId && <DistribucionDimension testId={testId} />}
         </div>
 
         <div className="bg-white shadow-md rounded-xl p-4">
           <h2 className="text-xl font-semibold">
             Comparación por Tipo de Participante
           </h2>
+          {/* Aquí puedes agregar el componente correspondiente para la comparación */}
         </div>
 
         <div className="bg-white shadow-md rounded-xl p-4">
           <h2 className="text-xl font-semibold">Promedio por Edad</h2>
+          {/* Aquí puedes agregar el componente de Promedio por Edad */}
         </div>
 
         <div className="bg-white shadow-md rounded-xl p-4">
           <h2 className="text-xl font-semibold">Promedio por Pronombre</h2>
+          {/* Aquí puedes agregar el componente de Promedio por Pronombre */}
         </div>
 
         <div className="bg-white shadow-md rounded-xl p-4">
           <h2 className="text-xl font-semibold">Promedio por Género</h2>
+          {/* Aquí puedes agregar el componente de Promedio por Género */}
         </div>
       </div>
 
@@ -101,6 +99,7 @@ const Estadisticas = () => {
       {tipoParticipante === "habitante" && (
         <div className="bg-white shadow-md rounded-xl p-4 mt-4">
           <h2 className="text-xl font-semibold">Conteo por Comuna</h2>
+          {/* Aquí puedes agregar el componente de Conteo por Comuna */}
         </div>
       )}
     </div>
