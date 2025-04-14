@@ -155,24 +155,3 @@ def conteo_por_comuna(test_id: UUID, db: Session = Depends(get_db)):
             conteo[comuna] += 1
 
     return dict(conteo)
-
-@router.get("/{test_id}/por-genero", description="Muestra si hay patrones diferentes de respuestas entre géneros.")
-def promedio_por_genero(test_id: UUID, db: Session = Depends(get_db)):
-    respuestas = db.query(Respuesta).filter(Respuesta.test_id == test_id).all()
-
-    agrupados = defaultdict(lambda: defaultdict(list))
-
-    for r in respuestas:
-        genero = r.caracterizacion_datos.get("genero", "No especificado")
-        for d in r.respuestas:
-            dimension = d["dimension"]
-            agrupados[genero][dimension].extend(d["respuestas"])
-
-    resultado = {}
-    for genero in agrupados:
-        resultado[genero] = {
-            dim: round(sum(valores) / len(valores), 2)
-            for dim, valores in agrupados[genero].items() if valores
-        }
-
-    return resultado
