@@ -6,7 +6,7 @@ import {
   obtenerEstadisticasPorComuna,
 } from "../services/estadisticas";
 import {
-  obtenerCuestionarios
+  obtenerFormularios
 } from "../services/cuestionarios"
 
 interface Estadistica {
@@ -28,7 +28,7 @@ const Estadisticas = () => {
   const [porComuna, setPorComuna] = useState<Estadistica[]>([]);
 
   useEffect(() => {
-    obtenerCuestionarios()
+    obtenerFormularios()
       .then((res) => {
         setCuestionarios(res.data),
         console.log(testId)
