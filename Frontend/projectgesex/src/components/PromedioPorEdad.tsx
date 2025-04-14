@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { obtenerEstadisticasPorEdad } from "../services/estadisticas";
+import { obtenerEstadisticasPorEdad } from "../services/Estadisticas";
 
 interface Props {
   testId: string;
@@ -78,7 +78,7 @@ const PromedioPorEdad: React.FC<Props> = ({ testId }) => {
               key={dim}
               dataKey={dim}
               stackId="a"
-              fill={["#e7911c  ", "#059669 ", "#ffc658", "#ff8042", "#a4de6c", "#d0ed57"][index % 6]}
+              fill={["#e7911c", "#059669 ", "#ffc658", "#ff8042", "#a4de6c", "#d0ed57"][index % 6]}
             />
           ))}
         </BarChart>

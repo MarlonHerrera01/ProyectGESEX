@@ -9,7 +9,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { obtenerComparacionTipoParticipante } from "../services/estadisticas";
+import { obtenerComparacionTipoParticipante } from "../services/Estadisticas";
 
 const ComparacionPorTipoParticipante: React.FC = () => {
   const [data, setData] = useState<any[]>([]);

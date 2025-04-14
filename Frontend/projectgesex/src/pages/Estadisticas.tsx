@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   obtenerPromediosPorDimension,
   obtenerDistribucionPorDimension,
@@ -7,8 +7,8 @@ import {
   obtenerEstadisticasPorPronombre,
   //obtenerEstadisticasPorGenero,
   obtenerEstadisticasPorComuna
-} from "../services/estadisticas";
-import { obtenerCuestionarios } from "../services/cuestionarios";
+} from "../services/Estadisticas";
+import { obtenerCuestionarios } from "../services/Cuestionarios";
 
 import PromediosPorDimension from "../components/PromediosPorDimension";
 import DistribucionDimension from "../components/DistribucionPorDimension";

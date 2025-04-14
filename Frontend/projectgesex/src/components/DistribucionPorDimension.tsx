@@ -15,12 +15,20 @@ type DistribucionDimension = {
 
 interface Props {
   testId: string;
-  data:any;
+  data: any;
 }
 
 const DistribucionPorDimension = ({ testId }: Props) => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const colores = {
+    '1': '#e7911c',
+    '2': '#059669',
+    '3': '#ffc658',
+    '4': '#e7911c',  // verde
+    '5': '#059669',  // azul
+  };
 
   useEffect(() => {
     const fetchDistribucion = async () => {
@@ -29,20 +37,14 @@ const DistribucionPorDimension = ({ testId }: Props) => {
         const res = await fetch(
           `http://127.0.0.1:8000/estadisticas/${testId}/dimensiones/distribucion`
         );
-        const json: { [dimension: string]: DistribucionDimension } =
-          await res.json();
+        const json: { [dimension: string]: DistribucionDimension } = await res.json();
 
-        // Rellenar cada dimensión con las opciones del 1 al 5
         const formatted = Object.entries(json).map(([dimension, distribuciones]) => {
-          const completado: { [key: string]: number } = {};
+          const completado: { [key: string]: number | string } = { dimension };
           for (let i = 1; i <= 5; i++) {
             completado[i.toString()] = distribuciones[i.toString()] || 0;
           }
-
-          return {
-            dimension,
-            ...completado,
-          };
+          return completado;
         });
 
         setData(formatted);
@@ -74,7 +76,7 @@ const DistribucionPorDimension = ({ testId }: Props) => {
               key={key}
               dataKey={key}
               name={`Opción ${key}`}
-              fill="#ef9f32"
+              fill={colores[key as keyof typeof colores]}
             />
           ))}
         </BarChart>

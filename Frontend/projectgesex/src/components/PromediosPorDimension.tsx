@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
+  Cell,
 } from 'recharts';
 
 type PromediosDimension = {
@@ -15,8 +16,15 @@ type PromediosDimension = {
 
 interface Props {
   testId: string;
-  data:any
+  data: any;
 }
+
+// Colores para cada dimensión (puedes ampliarlos si tienes más dimensiones)
+const colores = [
+  '#e7911c', // rojo
+  '#059669', // naranja
+  '#ffc658', // amarillo
+];
 
 const PromediosPorDimension = ({ testId }: Props) => {
   const [data, setData] = useState<any[]>([]);
@@ -24,7 +32,7 @@ const PromediosPorDimension = ({ testId }: Props) => {
 
   useEffect(() => {
     const fetchPromedios = async () => {
-      setLoading(true); // <-- Importante al cambiar testId
+      setLoading(true);
       try {
         const res = await fetch(
           `http://127.0.0.1:8000/estadisticas/${testId}/dimensiones/promedios`
@@ -60,7 +68,12 @@ const PromediosPorDimension = ({ testId }: Props) => {
           <XAxis dataKey="dimension" tick={{ fontSize: 12 }} />
           <YAxis domain={[1, 5]} />
           <Tooltip />
-          <Bar dataKey="promedio" fill="#34d399" />
+          <Bar dataKey="promedio">
+            {data.map((entry) => (
+              <Cell key={`cell-${entry.dimension}`} fill={colores[data.indexOf(entry) % colores.length]} />
+            ))}
+          </Bar>
+
         </BarChart>
       </ResponsiveContainer>
     </div>

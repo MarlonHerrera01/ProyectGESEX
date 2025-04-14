@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { obtenerEstadisticasPorPronombre } from "../services/estadisticas";
+import { obtenerEstadisticasPorPronombre } from "../services/Estadisticas";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
