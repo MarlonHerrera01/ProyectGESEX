@@ -78,7 +78,7 @@ const PromedioPorEdad: React.FC<Props> = ({ testId }) => {
               key={dim}
               dataKey={dim}
               stackId="a"
-              fill={["#8884d8", "#82ca9d", "#ffc658", "#ff8042", "#a4de6c", "#d0ed57"][index % 6]}
+              fill={["#e7911c  ", "#059669 ", "#ffc658", "#ff8042", "#a4de6c", "#d0ed57"][index % 6]}
             />
           ))}
         </BarChart>

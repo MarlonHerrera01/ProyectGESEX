@@ -59,9 +59,7 @@ const ConteoPorComuna: React.FC<ConteoPorComunaProps> = ({ testId }) => {
       {
         label: "Cantidad de respuestas por comuna",
         data: values,
-        backgroundColor: "#10b981", // verde
-        borderColor: "#059669",
-        borderWidth: 1,
+        backgroundColor: "#ef9f32"
       },
     ],
   };

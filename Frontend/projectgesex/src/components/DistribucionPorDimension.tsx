@@ -74,7 +74,7 @@ const DistribucionPorDimension = ({ testId }: Props) => {
               key={key}
               dataKey={key}
               name={`Opción ${key}`}
-              fill="#8884d8"
+              fill="#ef9f32"
             />
           ))}
         </BarChart>

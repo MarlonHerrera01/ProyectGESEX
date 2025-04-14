@@ -46,8 +46,8 @@ const ComparacionPorTipoParticipante: React.FC = () => {
           <YAxis dataKey="dimension" type="category" width={200} />
           <Tooltip />
           <Legend />
-          <Bar dataKey="universitario" fill="#8884d8" />
-          <Bar dataKey="habitante" fill="#82ca9d" />
+          <Bar dataKey="universitario" fill="#059669" />
+          <Bar dataKey="habitante" fill="#e7911c" />
         </BarChart>
       </ResponsiveContainer>
     </div>

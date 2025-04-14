@@ -66,8 +66,7 @@ const PromedioPorPronombre: React.FC<PromedioPorPronombreProps> = ({ testId }) =
         {
           label: `Promedios por Dimensión (${pronombre})`,
           data: valores,
-          backgroundColor: "#4e73df",
-          borderColor: "#2e59d9",
+          backgroundColor: "#059669",
           borderWidth: 1,
         },
       ],

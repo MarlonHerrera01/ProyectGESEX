@@ -60,7 +60,7 @@ const PromediosPorDimension = ({ testId }: Props) => {
           <XAxis dataKey="dimension" tick={{ fontSize: 12 }} />
           <YAxis domain={[1, 5]} />
           <Tooltip />
-          <Bar dataKey="promedio" fill="#8884d8" />
+          <Bar dataKey="promedio" fill="#34d399" />
         </BarChart>
       </ResponsiveContainer>
     </div>
