@@ -5,7 +5,7 @@ from datetime import datetime, date
 
 from app.database import SessionLocal
 from app.models.Respuestas import Respuesta
-from app.models.Usuario import Usuario
+from app.models.Test import Test
 from app.models.Segmentacion import Segmentacion
 from app.schemas.Respuestas import RespuestaCreate, RespuestaOut
 
@@ -34,13 +34,13 @@ def enviar_respuesta(respuesta: RespuestaCreate, db: Session = Depends(get_db)):
     db.refresh(nueva)
 
     # Calcular categoría basada en las respuestas
-    #categoria = Segmentacion.calcular_categoria(nueva)
+    categoria = Segmentacion.calcular_categoria(nueva.respuestas)
 
     # Actualizar la categoría del usuario
-    #usuario = db.query(Usuario).filter_by(id=respuesta.usuario_id).first()
-    #if usuario:
-    #    usuario.categoria = categoria
-    #    db.commit()
+    test = db.query(Test).filter_by(id=respuesta.test_id).first()
+    if test:
+        test.categoria = categoria
+        db.commit()
 
     return nueva
 

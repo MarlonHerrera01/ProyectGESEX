@@ -20,7 +20,8 @@ def crear_test(test: TestCreate, db: Session = Depends(get_db)):
     nuevo_test = Test(
         titulo=test.titulo,
         dimensiones=[dim.dict() for dim in test.dimensiones],
-        caracterizacion_template=test.caracterizacion_template.dict()
+        caracterizacion_template=test.caracterizacion_template.dict(),
+        categoria=test.categoria.dict()
     )
     db.add(nuevo_test)
     db.commit()
