@@ -13,8 +13,8 @@ import { obtenerCuestionarios } from "../services/cuestionarios";
 import PromediosPorDimension from "../components/PromediosPorDimension";
 import DistribucionDimension from "../components/DistribucionPorDimension";
 import ComparacionPorTipoParticipante from "../components/ComparacionPorTipo";
-//import PromedioPorEdad from "../components/PromedioPorEdad";
-//import PromedioPorPronombre from "../components/PromedioPorPronombre";
+import PromedioPorEdad from "../components/PromedioPorEdad";
+import PromedioPorPronombre from "../components/PromedioPorPronombre";
 //import PromedioPorGenero from "../components/PromedioPorGenero";
 //import ConteoPorComuna from "../components/ConteoPorComuna";
 
@@ -107,26 +107,13 @@ const Estadisticas = () => {
 
         <div className="bg-white shadow-md rounded-xl p-4">
           <h2 className="text-xl font-semibold">Promedio por Edad</h2>
-          {porEdad && <PromedioPorEdad data={porEdad} />}
-        </div>
-
-        <div className="bg-white shadow-md rounded-xl p-4">
-          <h2 className="text-xl font-semibold">Promedio por Pronombre</h2>
-          {porPronombre && <PromedioPorPronombre data={porPronombre} />}
-        </div>
-
-        <div className="bg-white shadow-md rounded-xl p-4">
-          <h2 className="text-xl font-semibold">Promedio por Género</h2>
-          {porGenero && <PromedioPorGenero data={porGenero} />}
+          {porEdad && <PromedioPorEdad data={porEdad} testId={testId}/>}
         </div>
       </div>
-
-      {tipoParticipante === "habitante" && porComuna && (
-        <div className="bg-white shadow-md rounded-xl p-4 mt-4">
-          <h2 className="text-xl font-semibold">Conteo por Comuna</h2>
-          <ConteoPorComuna data={porComuna} />
-        </div>
-      )}
+      <div className="bg-white shadow-md rounded-xl p-4">
+        <h2 className="text-xl font-semibold">Promedio por Pronombre</h2>
+        {porPronombre && <PromedioPorPronombre data={porPronombre} testId={testId} />}
+      </div>
     </div>
   );
 };
