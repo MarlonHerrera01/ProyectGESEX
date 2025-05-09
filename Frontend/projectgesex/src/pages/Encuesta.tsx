@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { obtenerFormularios, enviarRespuestas } from "../services/Cuestionarios";
+import { obtenerFingerprint } from "../Utils/fingerprint";
 
 const Encuesta = () => {
   const [formularios, setFormularios] = useState<any[]>([]);
@@ -30,7 +31,7 @@ const Encuesta = () => {
     setRespuestas((prev) => ({ ...prev, [preguntaId]: valor }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!formularioSeleccionado) {
@@ -38,7 +39,6 @@ const Encuesta = () => {
       return;
     }
 
-    // Obtener el formulario seleccionado
     const formulario = formularios.find(
       (formulario: any) => formulario.id === formularioSeleccionado
     );
@@ -48,12 +48,11 @@ const Encuesta = () => {
       return;
     }
 
-    // Agrupar respuestas por dimensión
     const respuestasPorDimension = formulario.dimensiones.map((dimension: any) => {
       const respuestasDimension = dimension.preguntas.map(
         (_: string, index: number) => {
           const preguntaId = `pregunta-${index + 1}`;
-          return parseInt(respuestas[preguntaId] || "0", 10); // Convertir a número
+          return parseInt(respuestas[preguntaId] || "0", 10);
         }
       );
       return {
@@ -62,30 +61,30 @@ const Encuesta = () => {
       };
     });
 
-    // Construir el objeto de datos
+    // Esperar a que fingerprint esté disponible
+    const fingerprint = await obtenerFingerprint();
+
     const data = {
       test_id: formularioSeleccionado,
       respuestas: respuestasPorDimension,
       caracterizacion_datos: caracterizacion,
-      fecha: new Date().toISOString().split("T")[0], // Fecha actual en formato YYYY-MM-DD
+      fecha: new Date().toISOString().split("T")[0],
+      fingerprint: fingerprint,
     };
 
-    // Enviar las respuestas al backend
-    enviarRespuestas(data)
-      .then((response) => {
-        alert("Respuestas enviadas correctamente.");
-        console.log("Respuesta del servidor:", response.data);
-
-        // Vaciar los campos del formulario
-        setCaracterizacion({});
-        setRespuestas({});
-        setFormularioSeleccionado(null); // Opcional: deseleccionar el formulario
-      })
-      .catch((err) => {
-        alert("Hubo un error al enviar las respuestas.");
-        console.error("Detalles del error:", err);
-      });
+    try {
+      const response = await enviarRespuestas(data);
+      alert("Respuestas enviadas correctamente.");
+      console.log("Respuesta del servidor:", response.data);
+      setCaracterizacion({});
+      setRespuestas({});
+      setFormularioSeleccionado(null);
+    } catch (err: any) {
+      alert("Hubo un error al enviar las respuestas.");
+      console.error("Detalles del error:", err);
+    }
   };
+
 
   if (error) {
     return (
@@ -115,11 +114,10 @@ const Encuesta = () => {
           <button
             key={formulario.id}
             onClick={() => setFormularioSeleccionado(formulario.id)}
-            className={`px-6 py-3 rounded-lg font-semibold text-white ${
-              formularioSeleccionado === formulario.id
-                ? "bg-red-700 shadow-lg"
-                : "bg-red-600 hover:bg-red-700"
-            }`}
+            className={`px-6 py-3 rounded-lg font-semibold text-white ${formularioSeleccionado === formulario.id
+              ? "bg-red-700 shadow-lg"
+              : "bg-red-600 hover:bg-red-700"
+              }`}
           >
             {formulario.caracterizacion_template.tipo_participante}
           </button>

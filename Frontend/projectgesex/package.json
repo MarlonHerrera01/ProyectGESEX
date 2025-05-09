@@ -12,6 +12,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.6.2",
     "@tailwindcss/postcss": "^4.0.17",
     "axios": "^1.8.4",
     "chart.js": "^4.4.8",
