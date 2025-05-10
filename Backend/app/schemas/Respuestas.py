@@ -14,6 +14,7 @@ class RespuestaCreate(BaseModel):
     respuestas: List[RespuestaDimension]
     caracterizacion_datos: Dict[str, Any]  # Nuevo campo dinámico
     fecha: date
+    fingerprint: str # Campo de validación de respuestas
 
 # Esquema de salida (incluye el ID generado)
 class RespuestaOut(RespuestaCreate):

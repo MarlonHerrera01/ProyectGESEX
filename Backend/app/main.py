@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import Usuario, Administrador, Test, Respuestas , Estadisticas , TestEstadistica , Segmentacion
+from app.routers import Usuario, Administrador, Test, Respuestas , Estadisticas , TestEstadistica , Segmentacion, Auth
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -18,3 +18,5 @@ app.include_router(Respuestas.router)
 app.include_router(Estadisticas.router)
 app.include_router(TestEstadistica.router)
 app.include_router(Segmentacion.router)
+# NUEVO: Router de autenticación
+app.include_router(Auth.router, prefix="/api", tags=["Auth"])

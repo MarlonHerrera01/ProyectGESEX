@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 import uuid
 from app.database import Base
 
+
 class Respuesta(Base):
     __tablename__ = "respuestas"
 
@@ -14,6 +15,7 @@ class Respuesta(Base):
     respuestas = Column(MutableList.as_mutable(JSON), nullable=False)  # Lista de respuestas
     caracterizacion_datos = Column(JSON, nullable=False)  # Nuevo: campos dinámicos según el template
     fecha = Column(Date, nullable=False)
+    fingerprint = Column(String, nullable=False)
 
     # Relaciones
     test = relationship("Test", back_populates="respuesta", lazy="joined")
