@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { obtenerFormularios, enviarRespuestas } from "../services/Cuestionarios";
+import { obtenerFormularios, enviarRespuestas } from "../services/cuestionarios";
 import { obtenerFingerprint } from "../Utils/fingerprint";
 
 const Encuesta = () => {
   const [formularios, setFormularios] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [formularioSeleccionado, setFormularioSeleccionado] = useState<string | null>(null); // ID del formulario seleccionado
+  const [formularioSeleccionado, setFormularioSeleccionado] = useState<string | null>(null);
   const [caracterizacion, setCaracterizacion] = useState<{ [key: string]: string }>({});
-  const [respuestas, setRespuestas] = useState<{ [key: string]: string }>({}); // Respuestas de las preguntas
+  const [respuestas, setRespuestas] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     obtenerFormularios()
@@ -39,29 +39,23 @@ const Encuesta = () => {
       return;
     }
 
-    const formulario = formularios.find(
-      (formulario: any) => formulario.id === formularioSeleccionado
-    );
-
+    const formulario = formularios.find((formulario: any) => formulario.id === formularioSeleccionado);
     if (!formulario) {
       alert("Formulario no encontrado.");
       return;
     }
 
     const respuestasPorDimension = formulario.dimensiones.map((dimension: any) => {
-      const respuestasDimension = dimension.preguntas.map(
-        (_: string, index: number) => {
-          const preguntaId = `pregunta-${index + 1}`;
-          return parseInt(respuestas[preguntaId] || "0", 10);
-        }
-      );
+      const respuestasDimension = dimension.preguntas.map((_: string, index: number) => {
+        const preguntaId = `pregunta-${contadorPregunta++}`;
+        return parseInt(respuestas[preguntaId] || "0", 10);
+      });
       return {
         dimension: dimension.nombre,
         respuestas: respuestasDimension,
       };
     });
 
-    // Esperar a que fingerprint esté disponible
     const fingerprint = await obtenerFingerprint();
 
     const data = {
@@ -85,6 +79,7 @@ const Encuesta = () => {
     }
   };
 
+  let contadorPregunta = 1;
 
   if (error) {
     return (
@@ -108,7 +103,6 @@ const Encuesta = () => {
         Selecciona un Cuestionario
       </h1>
 
-      {/* Lista de botones para seleccionar el formulario */}
       <div className="flex flex-wrap justify-center gap-4 mb-8">
         {formularios.map((formulario) => (
           <button
@@ -124,221 +118,138 @@ const Encuesta = () => {
         ))}
       </div>
 
-      {/* Renderizar el formulario seleccionado */}
       {formularioSeleccionado && (
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-8 border rounded-lg shadow-md p-6 bg-white"
-        >
+        <form onSubmit={handleSubmit} className="space-y-8 border rounded-lg shadow-md p-6 bg-white">
           {formularios
             .filter((formulario) => formulario.id === formularioSeleccionado)
             .map((formulario) => (
               <div key={formulario.id}>
-                {/* Sección de caracterización */}
+                {/* Caracterización */}
                 <div className="bg-gray-50 p-6 rounded-lg shadow-md mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                     Información de Caracterización
                   </h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {formulario.caracterizacion_template.campos_requeridos.map(
-                      (campo: string, index: number) => (
-                        <div key={index} className="flex flex-col">
-                          <label className="font-semibold text-gray-700 mb-2 text-sm uppercase tracking-wide">
-                            {campo.replace(/_/g, " ")}
-                          </label>
-                          {campo.toLowerCase() === "edad" ? (
-                            <select
-                              name={campo}
-                              value={caracterizacion[campo] || ""}
-                              onChange={(e) =>
-                                handleCaracterizacionChange(campo, e.target.value)
-                              }
-                              className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="" disabled>
-                                Seleccione su rango de edad
-                              </option>
-                              <option value="15-20">Entre 15 y 20</option>
-                              <option value="21-30">Entre 21 y 30</option>
-                              <option value="31-40">Entre 31 y 40</option>
-                              <option value="41-50">Entre 41 y 50</option>
-                              <option value="51-60">Entre 51 y 60</option>
-                              <option value="60+">Mayor de 60</option>
-                            </select>
-                          ) : campo.toLowerCase() === "lugar_procedencia" ? (
-                            <select
-                              name={campo}
-                              value={caracterizacion[campo] || ""}
-                              onChange={(e) =>
-                                handleCaracterizacionChange(campo, e.target.value)
-                              }
-                              className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="" disabled>
-                                Seleccione su lugar de procedencia
-                              </option>
-                              <option value="urbano">Urbano</option>
-                              <option value="rural">Rural</option>
-                            </select>
-                          ) : campo.toLowerCase() === "pronombre" ? (
-                            <select
-                              name={campo}
-                              value={caracterizacion[campo] || ""}
-                              onChange={(e) =>
-                                handleCaracterizacionChange(campo, e.target.value)
-                              }
-                              className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="" disabled>
-                                Seleccione su pronombre
-                              </option>
-                              <option value="ella">Ella</option>
-                              <option value="el">Él</option>
-                              <option value="elle">Elle</option>
-                              <option value="prefiero_no_decirlo">
-                                Prefiero no decirlo
-                              </option>
-                            </select>
-                          ) : campo.toLowerCase() === "estamento" ? (
-                            <select
-                              name={campo}
-                              value={caracterizacion[campo] || ""}
-                              onChange={(e) =>
-                                handleCaracterizacionChange(campo, e.target.value)
-                              }
-                              className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            >
-                              <option value="" disabled>
-                                Seleccione su estamento
-                              </option>
-                              <option value="estudiante">Estudiante</option>
-                              <option value="profesor">Profesor</option>
-                              <option value="empleado">Empleado</option>
-                              <option value="otro">Otro</option>
-                            </select>
-                          ) : (
-                            <input
-                              type="text"
-                              name={campo}
-                              value={caracterizacion[campo] || ""}
-                              onChange={(e) =>
-                                handleCaracterizacionChange(campo, e.target.value)
-                              }
-                              className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                              placeholder={`Ingrese ${campo.replace(/_/g, " ")}`}
-                            />
-                          )}
-                        </div>
-                      )
-                    )}
+                    {formulario.caracterizacion_template.campos_requeridos.map((campo: string, index: number) => (
+                      <div key={index} className="flex flex-col">
+                        <label className="font-semibold text-gray-700 mb-2 text-sm uppercase tracking-wide">
+                          {campo.replace(/_/g, " ")}
+                        </label>
+                        {campo.toLowerCase() === "edad" ? (
+                          <select
+                            name={campo}
+                            value={caracterizacion[campo] || ""}
+                            onChange={(e) => handleCaracterizacionChange(campo, e.target.value)}
+                            className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          >
+                            <option value="" disabled>Seleccione su rango de edad</option>
+                            <option value="15-20">Entre 15 y 20</option>
+                            <option value="21-30">Entre 21 y 30</option>
+                            <option value="31-40">Entre 31 y 40</option>
+                            <option value="41-50">Entre 41 y 50</option>
+                            <option value="51-60">Entre 51 y 60</option>
+                            <option value="60+">Mayor de 60</option>
+                          </select>
+                        ) : campo.toLowerCase() === "lugar_procedencia" ? (
+                          <select
+                            name={campo}
+                            value={caracterizacion[campo] || ""}
+                            onChange={(e) => handleCaracterizacionChange(campo, e.target.value)}
+                            className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          >
+                            <option value="" disabled>Seleccione su lugar de procedencia</option>
+                            <option value="urbano">Urbano</option>
+                            <option value="rural">Rural</option>
+                          </select>
+                        ) : campo.toLowerCase() === "pronombre" ? (
+                          <select
+                            name={campo}
+                            value={caracterizacion[campo] || ""}
+                            onChange={(e) => handleCaracterizacionChange(campo, e.target.value)}
+                            className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          >
+                            <option value="" disabled>Seleccione su pronombre</option>
+                            <option value="ella">Ella</option>
+                            <option value="el">Él</option>
+                            <option value="elle">Elle</option>
+                            <option value="prefiero_no_decirlo">Prefiero no decirlo</option>
+                          </select>
+                        ) : campo.toLowerCase() === "estamento" ? (
+                          <select
+                            name={campo}
+                            value={caracterizacion[campo] || ""}
+                            onChange={(e) => handleCaracterizacionChange(campo, e.target.value)}
+                            className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          >
+                            <option value="" disabled>Seleccione su estamento</option>
+                            <option value="estudiante">Estudiante</option>
+                            <option value="profesor">Profesor</option>
+                            <option value="empleado">Empleado</option>
+                            <option value="otro">Otro</option>
+                          </select>
+                        ) : (
+                          <input
+                            type="text"
+                            name={campo}
+                            value={caracterizacion[campo] || ""}
+                            onChange={(e) => handleCaracterizacionChange(campo, e.target.value)}
+                            className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            placeholder={`Ingrese ${campo.replace(/_/g, " ")}`}
+                          />
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Preguntas organizadas en tarjetas */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {(() => {
-                    let contadorGlobal = 1; // Contador global para las preguntas
-                    return formulario.dimensiones.map((dimension: any) =>
-                      dimension.preguntas.map((pregunta: string, index: number) => {
-                        const numeroPregunta = contadorGlobal++; // Incrementar el contador global
+                {/* Preguntas por dimensión */}
+                {formulario.dimensiones.map((dimension: any, dimIndex: number) => (
+                  <div
+                    key={dimIndex}
+                    className="mb-10 border rounded-xl p-6 bg-gray-50 shadow-lg"
+                  >
+                    <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center uppercase tracking-wide">
+                      {dimension.nombre}
+                    </h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {dimension.preguntas.map((pregunta: string, index: number) => {
+                        const numeroPregunta = contadorPregunta++;
+                        const preguntaId = `pregunta-${numeroPregunta}`;
                         return (
-                          <div
-                            key={`${dimension.nombre}-${index}`}
-                            className="border rounded-lg shadow-md p-4 bg-white"
-                          >
-                            <p className="font-semibold mb-4">
+                          <div key={preguntaId} className="border rounded-lg shadow-sm p-4 bg-white">
+                            <p className="font-medium mb-4">
                               {numeroPregunta}. {pregunta}
                             </p>
                             <div className="space-y-2">
-                              <label className="block">
-                                <input
-                                  type="radio"
-                                  name={`pregunta-${numeroPregunta}`}
-                                  value="1"
-                                  className="mr-2 accent-red-700"
-                                  onChange={(e) =>
-                                    handleRespuestaChange(
-                                      `pregunta-${numeroPregunta}`,
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                Totalmente en desacuerdo
-                              </label>
-                              <label className="block">
-                                <input
-                                  type="radio"
-                                  name={`pregunta-${numeroPregunta}`}
-                                  value="2"
-                                  className="mr-2 accent-red-700"
-                                  onChange={(e) =>
-                                    handleRespuestaChange(
-                                      `pregunta-${numeroPregunta}`,
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                En desacuerdo
-                              </label>
-                              <label className="block">
-                                <input
-                                  type="radio"
-                                  name={`pregunta-${numeroPregunta}`}
-                                  value="3"
-                                  className="mr-2 accent-red-700"
-                                  onChange={(e) =>
-                                    handleRespuestaChange(
-                                      `pregunta-${numeroPregunta}`,
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                Neutral
-                              </label>
-                              <label className="block">
-                                <input
-                                  type="radio"
-                                  name={`pregunta-${numeroPregunta}`}
-                                  value="4"
-                                  className="mr-2 accent-red-700"
-                                  onChange={(e) =>
-                                    handleRespuestaChange(
-                                      `pregunta-${numeroPregunta}`,
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                De acuerdo
-                              </label>
-                              <label className="block">
-                                <input
-                                  type="radio"
-                                  name={`pregunta-${numeroPregunta}`}
-                                  value="5"
-                                  className="mr-2 accent-red-700"
-                                  onChange={(e) =>
-                                    handleRespuestaChange(
-                                      `pregunta-${numeroPregunta}`,
-                                      e.target.value
-                                    )
-                                  }
-                                />
-                                Totalmente de acuerdo
-                              </label>
+                              {[1, 2, 3, 4, 5].map((valor) => (
+                                <label key={valor} className="block text-sm text-gray-700">
+                                  <input
+                                    type="radio"
+                                    name={preguntaId}
+                                    value={valor}
+                                    className="mr-2 accent-red-700"
+                                    onChange={(e) => handleRespuestaChange(preguntaId, e.target.value)}
+                                  />
+                                  {[
+                                    "Totalmente en desacuerdo",
+                                    "En desacuerdo",
+                                    "Neutral",
+                                    "De acuerdo",
+                                    "Totalmente de acuerdo",
+                                  ][valor - 1]}
+                                </label>
+                              ))}
                             </div>
                           </div>
                         );
-                      })
-                    );
-                  })()}
-                </div>
+                      })}
+                    </div>
+                  </div>
+                ))}
+
               </div>
             ))}
-          {/* Botón de envío */}
-          <button
-            type="submit"
-            className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mt-6"
-          >
+          <button type="submit" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 mt-6">
             Enviar Respuestas
           </button>
         </form>
