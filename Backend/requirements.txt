@@ -8,7 +8,6 @@ python-jose
 starlette
 email-validator
 fastapi[all]
-jose
 google
 google-auth
 # CORS middleware
