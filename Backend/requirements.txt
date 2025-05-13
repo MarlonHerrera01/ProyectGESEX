@@ -4,11 +4,13 @@ uvicorn
 sqlalchemy
 pydantic
 python-dotenv
+python-jose
 starlette
 email-validator
 fastapi[all]
 jose
 google
+google-auth
 # CORS middleware
 aiofiles
 requests
