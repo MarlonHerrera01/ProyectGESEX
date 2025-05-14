@@ -25,7 +25,7 @@ interface PromedioData {
   };
 }
 
-const pronombres = ["Él", "Ella", "Elle", "Prefiero no decirlo"];
+const pronombres = ["el", "ella", "elle", "prefiero_no_decirlo"];
 
 const PromedioPorPronombre: React.FC<PromedioPorPronombreProps> = ({ testId }) => {
   const [data, setData] = useState<PromedioData>({});
