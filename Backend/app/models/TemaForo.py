@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, Integer, DateTime, Text
 from sqlalchemy.dialects.postgresql import UUID, ARRAY
 from sqlalchemy.orm import relationship
+from sqlalchemy import JSON
 import uuid
 from datetime import datetime
 from app.database import Base
@@ -12,7 +13,7 @@ class TemaForo(Base):
     titulo = Column(String, nullable=False)
     autor = Column(String, nullable=False)
     contenido = Column(Text, nullable=False)
-    tags = Column(ARRAY(String), nullable=True)
+    tags = Column(JSON, nullable=True)
     fecha = Column(DateTime, default=datetime.utcnow)
     votos = Column(Integer, default=0)
 
