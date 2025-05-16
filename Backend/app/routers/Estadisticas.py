@@ -4,20 +4,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
 
-from app.database import SessionLocal
+from app.database import get_db
 from app.models.Estadisticas import Estadisticas as EstadisticasModel
 from app.schemas.Estadisticas import EstadisticasCreate , EstadisticasOut
 
 from app.models.Respuestas import Respuesta
 
 router = APIRouter(prefix="/estadisticas", tags=["Estadísticas"])
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.post("/", response_model=EstadisticasOut)
 def crear_estadistica(
