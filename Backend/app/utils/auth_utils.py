@@ -2,7 +2,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
-from jose import jwt
+from jose import jwt, JWTError
 from datetime import datetime, timedelta
 
 # Configuración (usa variables de entorno en producción!)
