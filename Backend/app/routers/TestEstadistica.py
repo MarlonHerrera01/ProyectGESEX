@@ -3,19 +3,12 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 
 # Importaciones internas del proyecto
-from app.database import SessionLocal
+from app.database import get_db
 from app.models.TestEstadistica import TestEstadistica 
 from app.schemas.TestEstadistica import TestEstadisticaCreate, TestEstadistica
 
 # Enrutador para el recurso test-estadistica
 router = APIRouter(prefix="/test-estadistica", tags=["TestEstadistica"])
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # Endpoint para crear una nueva relación entre respuesta y estadística
 @router.post("/", response_model=TestEstadistica)

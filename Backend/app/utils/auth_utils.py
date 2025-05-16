@@ -1,6 +1,7 @@
 from google.oauth2 import id_token
 from google.auth.transport import requests
-from fastapi import HTTPException
+from fastapi import HTTPException, Depends
+from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from datetime import datetime, timedelta
 
@@ -8,6 +9,9 @@ from datetime import datetime, timedelta
 GOOGLE_CLIENT_ID = "58428553625-ae0vqt34c9jaiul7gb66c3u9b34fd2g9.apps.googleusercontent.com"
 SECRET_KEY = "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"  # Cambia esto!
 ALGORITHM = "HS256"
+
+# Para extraer el token desde Authorization: Bearer <token>
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")  # tokenUrl no se usa, pero es requerido por FastAPI
 
 
 def verify_google_token(token: str):
@@ -41,3 +45,14 @@ def create_jwt_token(email: str):
         "exp": expires
     }
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+
+def get_current_user_email(token: str = Depends(oauth2_scheme)) -> str:
+    """Extrae el email del usuario desde el JWT en la cabecera Authorization"""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload.get("sub")
+        if not email:
+            raise HTTPException(status_code=401, detail="Token inválido: email no encontrado")
+        return email
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token inválido o expirado")

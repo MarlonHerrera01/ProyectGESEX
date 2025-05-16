@@ -3,21 +3,13 @@ from sqlalchemy.orm import Session
 from uuid import UUID
 from datetime import datetime, date
 
-from app.database import SessionLocal
+from app.database import get_db
 from app.models.Respuestas import Respuesta
 from app.models.Test import Test
 from app.models.Segmentacion import Segmentacion
 from app.schemas.Respuestas import RespuestaCreate, RespuestaOut
 
 router = APIRouter(prefix="/Respuestas", tags=["Respuestas"])
-
-# Dependencia para obtener la DB
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # POST para recibir y guardar respuestas
 @router.post("/", response_model=RespuestaOut)

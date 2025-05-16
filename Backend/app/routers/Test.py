@@ -2,18 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from uuid import UUID
 
-from app.database import SessionLocal
+from app.database import get_db
 from app.models.Test import Test
 from app.schemas.Test import TestCreate, TestOut
 
 router = APIRouter(prefix="/cuestionarios", tags=["Tests"])
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.post("/", response_model=TestOut)
 def crear_test(test: TestCreate, db: Session = Depends(get_db)):
