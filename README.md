@@ -77,7 +77,13 @@ Una vez el servidor este corriendo:
 ## 📊 Funcionalidades principales
 - Creación y gestión de tests con múltiples dimensiones y preguntas.
 - Registro de respuestas con datos de caracterización (edad, género, contexto, etc.).
-- Generación de estadísticas globales y por pregunta.
+- Generación de estadísticas globales por test.
+
+## Notas adicionales
+- Asegúrate de que tanto el backend como el frontend estén conectados correctamente (revisar URLs en axios).
+- Configura correctamente las variables de entorno para OAuth y otras integraciones.
+- El proyecto utiliza SQLite como base de datos por defecto.
+- Revisa que efectivamente instales todas las dependencias tanto en frontend cómo en el backend
 
 ## 👥 Autores
 - [@MarlonHerrera01](https://github.com/MarlonHerrera01) - Marlon Estiven Aristizabal Herrera (Gestor del proyecto)
